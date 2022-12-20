@@ -1,0 +1,103 @@
+<div class="">
+  <h1 [innerHtml]="userInfo && userInfo.popupMessage && userInfo.popupMessage.message"></h1>
+</div>
+<div *ngFor="let message of userMessages">
+  <b>{{ message.user }}</b>: {{ message.text }}
+</div>
+<label for="userName">Username</label>
+<input type="text" id="userName" [(ngModel)]="userName">
+
+<label for="message">Message</label>
+<input type="text" id="message" [(ngModel)]="messageText">
+
+<button (click)="sendMessage(userName, messageText)">Send</button>
+<div class="chat-app__container">
+
+  <!-- Chat Launcher Icon Section Starts -->
+  <div class="launcher-icon__container" *ngIf="!hideChatIcon">
+    <div class="icon-section" (click)="openChatWidget()">
+      <div class="chat-icon__main">
+        <div class="launcher-icon"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Chat Launcher Icon Section Ends -->
+  <div class="close-icon" *ngIf="hideChatIcon" (click)="closeChatWidget()">
+    <img src="../assets/images/close-icon.svg" height="8px" width="8px" />
+  </div>
+  <!-- Chat widget Section Starts -->
+  <div class="chat-widget__container" *ngIf="hideChatIcon">
+    <div class="widget-header">
+      <div class="widget-header__content">
+        <div class="logo-section">
+          <div class="logo-inner">
+            <img [src]="logoImage" class="logo-image" height="40px" width="40px" alt="Zoominfo" title="Zoominfo" />
+          </div>
+        </div>
+        <div class="header-content">
+          <div class="header-title">
+            <div>Zoominfo</div>
+          </div>
+          <div class="header-title__sub">You are chatting with Test bot</div>
+        </div>
+        <div class="header-menu__icon">
+          <svg width="4" height="20" viewBox="0 0 4 20" fill="#353B47" opacity="0.3">
+            <g opacity="current">
+              <circle cx="2" cy="10" r="2" fill="current"></circle>
+              <circle cx="2" cy="18" r="2" fill="current"></circle>
+              <circle cx="2" cy="2" r="2" fill="current"></circle>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="widget-content">
+      <div class="widget-content__wrapper" *ngFor="let message of messages; let i=index">
+        <div class="message-wrapper" *ngIf="message.label==='Email'">
+          <div class="company-logo__section">
+            <div class="company-icon">
+              <img [src]="logoImage" class="logo-image" height="27px" width="27px" alt="Zoominfo" title="Zoominfo" />
+            </div>
+          </div>
+          <div class="message-content" [innerHtml]="message.text">
+          </div>
+        </div>
+        <div class="message-wrapper" *ngIf="message.isEditorActive && message.label==='Email'">
+          <div class="company-logo__section">
+          </div>
+          <div class="message-content">
+            <div><b>Email</b></div>
+            <div class="email-text">
+              <div><input class="text-box" type="text" name="email" id="email" placeholder="Enter Your Email"></div>
+              <div class="send-icon" (click)="sendMessage(message.text, message.text)">
+                <img src="../assets/images/send-icon.png" width="20" height="20">
+               
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="message-wrapper" *ngIf="message.sender">
+          <div class="message-content-blue">
+            TestBot
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="widget-footer">
+      <button class="refresh-button__wrapper">
+        <button class="refresh-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M13.5699 2.43462C12.9111 1.77664 11.524 1.04884 10.9281 0.752266C10.797 0.687049 10.6462 0.783104 10.6462 0.92948V2.61823C10.6462 2.79542 10.74 2.95925 10.8903 3.05313C11.2149 3.25591 11.7819 3.62743 12.0764 3.92272C14.2132 6.06052 14.2132 9.53633 12.0764 11.6731C9.93971 13.8066 6.46605 13.8066 4.3261 11.6731C2.19152 9.53419 2.19152 6.06052 4.3261 3.92272C4.33146 3.91629 4.34862 3.90556 4.35612 3.89592L5.4534 4.98948C5.51651 5.05237 5.62415 5.00756 5.62399 4.91846L5.61731 1.34529C5.6171 1.23509 5.52778 1.14581 5.41757 1.14567L1.84695 1.1409C1.75779 1.14078 1.71306 1.24856 1.7761 1.31161L2.86588 2.40138C2.85837 2.41425 2.84658 2.42711 2.83693 2.43462C-0.125331 5.39581 -0.125331 10.2 2.83693 13.1612C5.80348 16.1256 10.6044 16.1256 13.5699 13.1612C16.53 10.2 16.5332 5.39581 13.5699 2.43462Z"
+              fill="#faf8f8"></path>
+          </svg>
+        </button>
+        <span>Restart conversation</span>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="hideChatIcon" class="footer-copyright__content"><a href="https://zoominfo.com/chat" target="_blank"
+      class="zoominfo-icon">Powered by <img src="../assets/images/logo.svg" class=""></a></div>
+
+  <!-- Chat widget Section Ends -->
+</div>
