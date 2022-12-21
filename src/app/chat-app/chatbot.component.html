@@ -2,7 +2,13 @@
     <h1 [innerHtml]="userInfo && userInfo.popupMessage && userInfo.popupMessage.message"></h1>
   </div>
   <div class="chat-app__container">
-  
+    <label for="userName">Username</label>
+    <input type="text" id="userName" [(ngModel)]="userName">
+    
+    <label for="message">Message</label>
+    <input type="text" id="message" [(ngModel)]="messageText">
+    
+    <button (click)="sendMessage(userName, messageText)">Send</button>
     <!-- Chat Launcher Icon Section Starts -->
     <div class="launcher-icon__container" *ngIf="!hideChatIcon">
       <div class="icon-section" (click)="openChatWidget()">
@@ -58,8 +64,8 @@
             <div class="message-content">
               <div><b>Email</b></div>
               <div class="email-text">
-                <div><input class="text-box" type="text" name="email" id="email" placeholder="Enter Your Email"></div>
-                <div class="send-icon" (click)="sendMessage(message.text, message.text)">
+                <div><input #email class="text-box" type="text" name="email" id="email" placeholder="Enter Your Email"></div>
+                <div class="send-icon" (click)="sendMessage(email.value, message.text)">
                   <img src="../assets/images/send-icon.png" width="20" height="20">
                  
                 </div>

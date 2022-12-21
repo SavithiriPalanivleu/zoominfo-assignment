@@ -27,7 +27,7 @@ export class ChatBotComponent implements OnInit {
 
   ngOnInit(): void {
     const IsUserExist = localStorage.getItem('channelId');
-    this.pusherService.messagesChannel.bind('client-new-message', (message: any) => {
+    this.pusherService.messagesChannel.bind('client-my-event', (message: any) => {
       this.userMessages.push(message);
     });
     if (!IsUserExist) {
@@ -98,7 +98,8 @@ export class ChatBotComponent implements OnInit {
        user: user,
        text: text,
     }
-    this.pusherService.messagesChannel.trigger('client-new-message', message);
+    this.pusherService.messagesChannel.trigger('client-my-event', message);
     this.userMessages.push(message);
+    
   }
 }
