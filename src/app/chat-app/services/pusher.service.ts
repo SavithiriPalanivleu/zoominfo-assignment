@@ -9,7 +9,8 @@ export class PusherService {
     channelId = "";
     constructor() {
       this.channelId = localStorage.getItem("channelId") || "";
-      this.pusher = new Pusher(ChatBotContants.PUSHER_KEY, {authEndpoint: "http://localhost:4200/"});
+      this.pusher = new Pusher(ChatBotContants.PUSHER_KEY, {authEndpoint: "http://localhost:3000/pusher/auth",
+    cluster: "ap2"});
 
       this.messagesChannel = this.pusher.subscribe(this.channelId);
     }
