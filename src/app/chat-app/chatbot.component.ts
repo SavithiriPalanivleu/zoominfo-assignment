@@ -18,6 +18,7 @@ export class ChatBotComponent implements OnInit {
   userMessages: Array<UserMessage>;
   messageText: any;
   userName: any;
+  channelId = "";
 
   constructor(private chatBotService: ChatBotService,
     private pusherService: PusherService) {
@@ -26,11 +27,11 @@ export class ChatBotComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const IsUserExist = localStorage.getItem('channelId');
-    this.pusherService.messagesChannel.bind('client-my-event', (message: any) => {
+    this.channelId = localStorage.getItem('channelId') || "";
+    this.pusherService.messagesChannel.bind('client-widget-message', (message: any) => {
       this.userMessages.push(message);
     });
-    if (!IsUserExist) {
+    if (!this.channelId) {
       this.getUser();
     } else {
       const userInfoStr = localStorage.getItem('userInfo') || "";
@@ -48,6 +49,7 @@ export class ChatBotComponent implements OnInit {
         localStorage.setItem('userInfo', JSON.stringify(userDetail));
         localStorage.setItem('userId', userDetail.user.id);
         localStorage.setItem('channelId', userDetail.channelId);
+        this.userInfo = userDetail;
       }
     });
   }
@@ -64,7 +66,8 @@ export class ChatBotComponent implements OnInit {
             type: item.type,
             isEditorActive: true,
             id: response.messages.length,
-            label: 'Email'
+            label: 'Email',
+            stepUid: item.stepUid
           };
           this.messages.push(message);
         });
@@ -93,12 +96,31 @@ export class ChatBotComponent implements OnInit {
     this.hideChatIcon = false;
   }
   
-  sendMessage(user: string, text: string) {
-    const message: UserMessage = {
-       user: user,
-       text: text,
+  sendMessage(user: string, text: string, messageData?: any) {
+    const currentTime = new Date().getTime();
+    const message: any = {
+        channelName: this.channelId,
+        display: {
+          channelId: this.channelId,
+          img: "https://staging1-uploads.insent.ai/insentstaging1/logo-insentstaging1-1649232340484?1649232340561",
+          input: {
+            key: "email", uid: this.userInfo.user.id, 
+            type: "email", text: "Email",disabled: true, 
+            validateDomains: true, value: text
+          },
+          lastMessageTimeStamp: currentTime,
+          lead: false,
+          name: "Test bot",
+          stepUid: messageData.stepUid,
+          time: currentTime,
+          type: "input",
+          userId: this.userInfo.user.id
+        },
+        message: {email: text, lastMessageTimeStamp: currentTime},
+        senderId: this.userInfo.user.id,
+        event: "client-widget-message"
     }
-    this.pusherService.messagesChannel.trigger('client-my-event', message);
+    this.pusherService.messagesChannel.trigger('client-widget-message', message);
     this.userMessages.push(message);
     
   }

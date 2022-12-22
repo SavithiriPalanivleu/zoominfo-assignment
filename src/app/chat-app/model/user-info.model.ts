@@ -19,6 +19,7 @@ export interface Message {
     sender: boolean;
     isEditorActive: boolean;
     label: string;
+    stepUid?: string;
 }
 export interface UserMessage {
     text: string;

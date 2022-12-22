@@ -24,6 +24,11 @@ export class ChatBotService {
         return this.http.get(url, this.getHeaders(userId));
     }
 
+    getUserAuth(userId: string) {
+        const url = "https://insentstaging1.widget.insent.ai/pusher/presence/auth/visitor?userid=" + userId;
+        
+    }
+
     getHeaders(userId?: string) {
         if (userId) {
             return {headers: new HttpHeaders()
